@@ -2,6 +2,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import Body from "./component/Body";
 import MyBookShelf from "./component/MyBookShelf";
+import { Provider } from "react-redux";
+import store from "./utils/store";
 
 const appRouter = createBrowserRouter([
   {
@@ -15,7 +17,11 @@ const appRouter = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={appRouter}></RouterProvider>;
+  return (
+    <Provider store={store}>
+      <RouterProvider router={appRouter}></RouterProvider>;
+    </Provider>
+  );
 }
 
 export default App;

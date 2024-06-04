@@ -1,8 +1,19 @@
+import { useDispatch, useSelector } from "react-redux";
+import { addBooks } from "../utils/bookshelfSlice";
+
 const BookCard = (props) => {
-  const { title, author_name, first_publish_year, edition_count } = props.book;
+  const { title, author_name, first_publish_year, edition_count } = props?.book;
+
+  const dispatch = useDispatch();
+
+  const onAddHandler = () => {
+    dispatch(addBooks(props.book));
+  };
+
+  const showBook = useSelector((store) => store.book.viewBook);
 
   return (
-    <div className="mx-4 my-5 pb-10 max-w-sm bg-white border-4 border-gray-300 rounded-lg shadow-lg">
+    <div className="mx-4 my-5 pb-10 w-[400px] bg-white border-4 border-gray-300 rounded-lg shadow-lg">
       <div className="p-6">
         <h1 className="text-2xl  mb-2 text-gray-800 mt-5">
           <span className="font-bold">Book Title:</span> {title}
@@ -19,9 +30,13 @@ const BookCard = (props) => {
             <span className="font-semibold text-lg"> Edition Count: </span> {edition_count}
           </h3>
         </div>
-        <div className="mt-5">
-          <button className="px-3 py-2 bg-green-600 bg-opacity-80 text-white rounded-2xl">Add to Bookshelf</button>
-        </div>
+        {showBook && (
+          <div className="mt-5">
+            <button className="px-3 py-2 bg-green-600 bg-opacity-80 text-white rounded-2xl" onClick={onAddHandler}>
+              Add to Bookshelf
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BookCard from "./BookCard";
 import EmptyBook from "./EmptyBook";
+import { useDispatch } from "react-redux";
+import { setViewBookOn } from "../utils/bookshelfSlice";
+import { API } from "../utils/constants";
 
 const BookContainer = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setViewBookOn());
+  });
+
   const fetchBooks = async () => {
     setLoading(true);
-    const response = await fetch(`https://openlibrary.org/search.json?q=${searchTerm}&limit=10&page=1`);
+    const response = await fetch(API + { searchTerm } + "&limit=10&page=1");
     const data = await response.json();
     setBooks(data.docs);
     setLoading(false);
@@ -46,8 +55,8 @@ const BookContainer = () => {
         <div className="text-center mt-5">Loading...</div>
       ) : (
         <div className="flex flex-wrap justify-center">
-          {books.map((book) => (
-            <BookCard key={book.key} book={book} />
+          {books.map((book, idx) => (
+            <BookCard key={idx} book={book} />
           ))}
         </div>
       )}
